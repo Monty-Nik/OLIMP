@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Абонементная система - OLIMP</title>
+    <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="css/abonement.css">
 </head>
 <body>
@@ -25,9 +26,7 @@
             <li class="main_menu_item">
                 <a href="galery.html" class="main_menu_link">Галерея</a>
             </li>
-            <li class="main_menu_item">
-                <a href="#" class="main_menu_link">Сертификаты</a>
-            </li>
+
             <li class="main_menu_item">
                 <a href="trainer.html" class="main_menu_link">Тренеры</a>
             </li>
@@ -113,7 +112,7 @@
                             </span>
                     </div>
                     <div class="tariff__buttons">
-                        <button class="btn btn--lime">ЗАКАЗАТЬ АБОНЕМЕНТ</button>
+                        <button class="btn btn--lime open-modal-btn">ЗАКАЗАТЬ АБОНЕМЕНТ</button>
                         <button class="btn btn--grey">ПОЛУЧИТЬ КОНСУЛЬТАЦИЮ</button>
                     </div>
                 </div>
@@ -142,7 +141,7 @@
                             </span>
                     </div>
                     <div class="tariff__buttons">
-                        <button class="btn btn--lime">ЗАКАЗАТЬ АБОНЕМЕНТ</button>
+                        <button class="btn btn--lime open-modal-btn">ЗАКАЗАТЬ АБОНЕМЕНТ</button>
                         <button class="btn btn--grey">ПОЛУЧИТЬ КОНСУЛЬТАЦИЮ</button>
                     </div>
                 </div>
@@ -173,7 +172,7 @@
                                                    alt="pepicoins"></span>
                     </div>
                     <div class="tariff__buttons">
-                        <button class="btn btn--lime">ЗАКАЗАТЬ АБОНЕМЕНТ</button>
+                        <button class="btn btn--lime open-modal-btn">ЗАКАЗАТЬ АБОНЕМЕНТ</button>
                         <button class="btn btn--grey">ПОЛУЧИТЬ КОНСУЛЬТАЦИЮ</button>
                     </div>
                 </div>
@@ -213,7 +212,153 @@
         </div>
     </div>
 </footer>
+<div id="subscriptionModal" class="modal-overlay">
+    <div class="modal-container">
+        <button type="button" class="modal-close">×</button>
+
+        <div class="modal-header">
+            Закажите абонемент <span id="modalTariffName"></span>, заполнив форму. Наш менеджер свяжется с вами чтобы обсудить вопросы покупки
+        </div>
+
+        <form id="subscriptionForm">
+            <div class="form-row">
+                <div class="form-col">
+                    <label for="modalName" class="modal-label">Имя</label>
+                    <input type="text" id="modalName" name="name" class="modal-input" required>
+                </div>
+                <div class="form-col">
+                    <label for="modalPhone" class="modal-label">Телефон</label>
+                    <input type="tel" id="modalPhone" name="phone" class="modal-input" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="modalComment" class="modal-label">Комментарий</label>
+                <textarea id="modalComment" name="comment" class="modal-textarea"></textarea>
+            </div>
+
+            <input type="hidden" id="selectedTariff" name="tariff">
+
+            <button type="submit" class="modal-submit">Заказать абонемент</button>
+        </form>
+    </div>
+</div>
+
 <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Мобильное меню (ваш существующий код)
+        const menuBtn = document.querySelector('.main_header_mobile_menu');
+        const menu = document.querySelector('.main_menu');
+        if (menuBtn && menu) {
+            menuBtn.addEventListener('click', () => {
+                menu.classList.toggle('active');
+                menuBtn.classList.toggle('active');
+                document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+            });
+
+            document.querySelectorAll('.main_menu_link').forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.remove('active');
+                    menuBtn.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+        }
+
+        // Модальное окно для заказа абонемента
+        const modal = document.getElementById('subscriptionModal');
+        const openModalBtns = document.querySelectorAll('.open-modal-btn');
+        const closeModalBtn = document.querySelector('.modal-close');
+        const modalTariffName = document.getElementById('modalTariffName');
+        const selectedTariffInput = document.getElementById('selectedTariff');
+        const subscriptionForm = document.getElementById('subscriptionForm');
+
+        // Открытие модального окна
+        openModalBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tariffName = btn.getAttribute('data-tariff');
+                modalTariffName.textContent = tariffName;
+                selectedTariffInput.value = tariffName;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Блокируем скролл страницы
+            });
+        });
+
+        // Закрытие модального окна
+        closeModalBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // Восстанавливаем скролл
+        });
+
+        // Закрытие модального окна при клике на оверлей
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Закрытие модального окна по клавише Esc
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Обработка отправки формы
+        subscriptionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Собираем данные формы
+            const formData = new FormData(subscriptionForm);
+            const data = Object.fromEntries(formData);
+
+            // Здесь можно добавить отправку данных на сервер
+            console.log('Данные формы:', data);
+
+            // Показываем сообщение об успехе (замените на реальную отправку)
+            alert(`Спасибо! Ваша заявка на абонемент "${data.tariff}" принята. Мы свяжемся с вами в ближайшее время.`);
+
+            // Закрываем модальное окно
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+
+            // Очищаем форму
+            subscriptionForm.reset();
+        });
+
+        // Маска для телефона (опционально)
+        const phoneInput = document.getElementById('modalPhone');
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function(e) {
+                let value = this.value.replace(/\D/g, '');
+
+                if (value.length > 0) {
+                    if (value[0] === '7' || value[0] === '8') {
+                        value = value.substring(1);
+                    }
+
+                    let formatted = '+7 ';
+
+                    if (value.length > 0) {
+                        formatted += '(' + value.substring(0, 3);
+                    }
+                    if (value.length >= 4) {
+                        formatted += ') ' + value.substring(3, 6);
+                    }
+                    if (value.length >= 7) {
+                        formatted += '-' + value.substring(6, 8);
+                    }
+                    if (value.length >= 9) {
+                        formatted += '-' + value.substring(8, 10);
+                    }
+
+                    this.value = formatted;
+                }
+            });
+        }
+    });
     document.addEventListener('DOMContentLoaded', () => {
         const menuBtn = document.querySelector('.main_header_mobile_menu');
         const menu = document.querySelector('.main_menu');
