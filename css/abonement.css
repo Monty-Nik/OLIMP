@@ -181,7 +181,7 @@ ul {
 }
 
 .main_header_mobile_menu.active .main_header_mobile_menu__line:nth-child(2) {
-    opacity: 0; /* Скрываем среднюю линию */
+    opacity: 0;
 }
 
 .main_header_mobile_menu.active .main_header_mobile_menu__line:nth-child(3) {

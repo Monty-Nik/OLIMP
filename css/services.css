@@ -101,7 +101,6 @@ ul {
     width: 100%;
 }
 
-/* Иконки соц-сетей */
 .soc_links {
     list-style-type: none;
     padding-left: 0;
@@ -115,8 +114,6 @@ ul {
     height: 20px;
     width: 20px;
 }
-
-/* --- МОБИЛЬНАЯ КНОПКА (БУРГЕР -> КРЕСТИК) --- */
 .main_header_mobile_menu {
     display: none;
     border: none;
@@ -144,7 +141,6 @@ ul {
 .main_header_mobile_menu__line:nth-child(2) { top: 50%; transform: translateY(-50%); }
 .main_header_mobile_menu__line:nth-child(3) { bottom: 0; }
 
-/* Анимация крестика */
 .main_header_mobile_menu.active .main_header_mobile_menu__line:nth-child(1) {
     transform: translateY(13.5px) rotate(45deg);
 }
@@ -159,7 +155,7 @@ ul {
     position: relative;
     min-height: 626px;
     padding: 120px 0 60px;
-    background-image: url('../img/first_screen.jpg'); /* Убедитесь, что путь верен */
+    background-image: url('../img/first_screen.jpg');
     background-size: cover;
     background-position: center top;
     color: #fff;
@@ -223,7 +219,7 @@ ul {
     display: flex;
     justify-content: space-between;
     margin-bottom: 100px;
-    gap: 40px; /* Добавим явный отступ */
+    gap: 40px;
 }
 
 .service-card:last-child {
